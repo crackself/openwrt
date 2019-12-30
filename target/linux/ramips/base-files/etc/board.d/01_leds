@@ -38,6 +38,11 @@ alfa-network,awusfree1|\
 edimax,br-6478ac-v2)
 	set_wifi_led "$boardname:blue:wlan"
 	;;
+alfa-network,r36m-e4g)
+	ucidef_set_led_netdev "4g" "4g" "$boardname:orange:4g" "wwan0"
+	ucidef_set_led_switch "lan" "lan" "$boardname:green:lan" "switch0" "0x8"
+	ucidef_set_led_switch "wan" "wan" "$boardname:green:wan" "switch0" "0x10"
+	;;
 alfa-network,tube-e4g)
 	ucidef_set_led_netdev "4g" "4g" "$boardname:green:4g" "wwan0"
 	ucidef_set_led_netdev "lan" "lan" "$boardname:blue:lan" "eth0"
@@ -65,7 +70,7 @@ hiwifi,hc5861b)
 	set_wifi_led "$boardname:green:wlan2g"
 	;;
 belkin,f9k1109v1)
-	set_usb_led "$boardname:green:usb1"
+	ucidef_set_led_usbport "usb" "USB" "$boardname:green:usb1" "usb1-port1"
 	ucidef_set_led_netdev "lan" "lan" "$boardname:blue:wps" "eth0"
 	;;
 broadway)
@@ -355,6 +360,7 @@ tplink,tl-wr842n-v5)
 tplink,tl-wr902ac-v3)
 	ucidef_set_led_wlan "wlan2g" "wlan2g" "$boardname:green:wlan" "phy0tpt"
 	ucidef_set_led_switch "lan" "lan" "$boardname:green:lan" "switch0" "0x10"
+	ucidef_set_led_switch "wan" "wan" "$boardname:green:wan" "switch0" "0x10"
 	;;
 u25awf-h1)
 	set_wifi_led "u25awf:red:wifi"
