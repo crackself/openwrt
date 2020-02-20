@@ -1,0 +1,13 @@
+#!/bin/sh
+
+#fix permission
+chmod +x /etc/init.d/*
+
+# disable vlmcsd
+/etc/init.d/vlmcsd disable
+/etc/init.d/vlmcsd stop
+
+exit 0
+
+
+
