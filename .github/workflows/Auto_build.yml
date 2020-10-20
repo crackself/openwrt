@@ -50,11 +50,11 @@ jobs:
         run: |
               ./scripts/feeds update -a
               ./scripts/feeds install -a
-              git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/crackself/luci-theme-argon
-              #git clone --depth=1 https://github.com/kenzok8/openwrt-packages.git package/crackself/openwrt-packages
-              git clone --depth=1 https://github.com/tty228/luci-app-serverchan.git  package/crackself/luci-app-serverchan
-              git clone --depth=1 https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/crackself/luci-app-jd-dailybonus
-              git clone --depth=1 -b master https://github.com/vernesong/OpenClash.git package/crackself//OpenClash
+              git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/luci-theme-argon
+              #git clone --depth=1 https://github.com/kenzok8/openwrt-packages.git package/openwrt-packages
+              git clone --depth=1 https://github.com/tty228/luci-app-serverchan.git  package/luci-app-serverchan
+              git clone --depth=1 https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/luci-app-jd-dailybonus
+              git clone --depth=1 -b master https://github.com/vernesong/OpenClash.git package/OpenClash
 
       - name: Generate configuration file
         run: |
