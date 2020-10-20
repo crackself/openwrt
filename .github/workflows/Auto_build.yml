@@ -273,14 +273,7 @@ jobs:
           CONFIG_PACKAGE_luci-proto-relay=y
           CONFIG_PACKAGE_luci-proto-vpnc=y
           CONFIG_PACKAGE_luci-proto-wireguard=y
-        EOF
-
-          #
-          # ===============================================================
-          # 
-
-          sed -i 's/^[ \t]*//g' ./.config
-          make defconfig
+          EOF
 
       - name: Make download
         run: |
