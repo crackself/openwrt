@@ -309,6 +309,7 @@ jobs:
             CONFIG_boost-runtime-shared=y
             CONFIG_boost-static-and-shared-libs=y
             CONFIG_boost-variant-release=y
+
           EOF
 
       - name: Make download
