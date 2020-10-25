@@ -1,47 +1,32 @@
 #
-# This is free software, lisence use MIT.
-# 
-# Copyright (C) 2019 P3TERX <https://p3terx.com>
-# Copyright (C) 2020 KFERMercer <KFER.Mercer@gmail.com>
-# 
-# <https://github.com/KFERMercer/OpenWrt-CI>
+# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
+#
+# This is free software, licensed under the MIT License.
+# See /LICENSE for more information.
+#
+# https://github.com/P3TERX/Actions-OpenWrt
+# Description: Build OpenWrt using GitHub Actions
 #
 
 name: Auto_build
 
 on:
   push:
-    branches: 
-      - openwrt-19.07
-  # schedule:
-  #   - cron: 0 20 * * *
-  release:
-    types: [published]
+  branch:
+    - openwrt-19.07
 
 jobs:
-
-  build_openwrt:
-
-    name: Build OpenWrt firmware
-
+  build:
     runs-on: ubuntu-latest
 
-    if: github.event.repository.owner.id == github.event.sender.id
-
     steps:
-
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          ref: openwrt-19.07
-
-      - name: Space cleanup
-        env:
-          DEBIAN_FRONTEND: noninteractive
-        run: |
-            docker rmi `docker images -q`
-            echo "Deleting files, please wait ..."
-            sudo rm -rf \
+    - name: Initialization environment
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        docker rmi `docker images -q`
+        echo "Deleting files, please wait ..."
+        sudo rm -rf \
               /usr/share/dotnet \
               /etc/mysql \
               /etc/php
@@ -58,84 +43,109 @@ jobs:
               openjdk* \
               mysql* \
               php*
+        sudo -E apt-get update
+        sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex node-uglify git gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx-ucl libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync
+        sudo -E apt-get -y autoremove --purge
+        sudo -E apt-get clean
 
-            sudo -E apt-get update
-            sudo -E apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex node-uglify git gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx-ucl libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync
-            sudo -E apt-get -y autoremove --purge
-            sudo -E apt-get clean
+    - name: Checkout
+      uses: actions/checkout@main
+      with:
+        ref: openwrt-19.07
 
-      - name: Update feeds
+    - name: Update feeds
+      run: cd openwrt && ./scripts/feeds update -a
+
+    - name: Install feeds
+      run: cd openwrt && ./scripts/feeds install -a
+
+    - name: remove custom package
+      run: cd openwrt && ./scripts/feeds uninstall kcptun
+
+    - name: add custom packages
         run: |
-              ./scripts/feeds update -a
-              ./scripts/feeds install -a
-              ./scripts/feeds uninstall kcptun
-              
-              # patch for using Golan 1.15.3
-              sed -i 's/=1.13/=1.15/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang-version.mk
-              sed -i 's/=15/=3/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang-version.mk
-              sed -i 's/5fb43171046cf8784325e67913d55f88a683435071eef8e9da1aa8a1588fcf5d/896a602570e54c8cdfc2c1348abd4ffd1016758d0bd086ccd9787dbfc9b64888/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang/Makefile
-
-              git clone --depth=1 https://github.com/xiaorouji/openwrt-package.git package/crackself/diy1
-              git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/crackself/luci-theme-argon
-              #git clone --depth=1 https://github.com/kenzok8/openwrt-packages.git package/crackself/openwrt-packages
-              git clone --depth=1 https://github.com/tty228/luci-app-serverchan.git  package/crackself/luci-app-serverchan
-              #git clone --depth=1 https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/crackself/luci-app-jd-dailybonus
-              git clone --depth=1 -b master https://github.com/vernesong/OpenClash.git package/crackself/OpenClash
-              git clone --depth=1 https://github.com/maxlicheng/luci-app-unblockmusic.git package/crackself/luci-app-unblockmusic
+        sed -i 's/=1.13/=1.15/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang-version.mk
+        sed -i 's/=15/=3/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang-version.mk
+        sed -i 's/5fb43171046cf8784325e67913d55f88a683435071eef8e9da1aa8a1588fcf5d/896a602570e54c8cdfc2c1348abd4ffd1016758d0bd086ccd9787dbfc9b64888/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang/Makefile
+        git clone --depth=1 https://github.com/xiaorouji/openwrt-package.git package/crackself/diy1
+        git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/crackself/luci-theme-argon
+        git clone --depth=1 https://github.com/tty228/luci-app-serverchan.git  package/crackself/luci-app-serverchan
+        git clone --depth=1 -b master https://github.com/vernesong/OpenClash.git package/crackself/OpenClash
+        git clone --depth=1 https://github.com/maxlicheng/luci-app-unblockmusic.git package/crackself/luci-app-unblockmusic
+#git clone --depth=1 https://github.com/kenzok8/openwrt-packages.git package/crackself/openwrt-packages
+#git clone --depth=1 https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/crackself/luci-app-jd-dailybonus
 
     - name: Load custom configuration
       run: |
         cd openwrt
         cp .github/workflows/19.07.diffconfig .config
 
-      - name: Make download
-        run: |
-              #make download -j$(nproc)
-              make defconfig
-              cat .config
-              make download -j8
-              find dl -size -1024c -exec ls -l {} \;
-              find dl -size -1024c -exec rm -f {} \;
+    # - name: SSH connection to Actions
+      # uses: P3TERX/ssh2actions@v1.0.0
+      # if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+      # env:
+        # TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        # TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
-      - name: Compile firmware
-        run: |
-              echo -e "$(nproc) thread build."
-              #make -j$(nproc) V=s
-              make -j8 V=s
+    - name: Download package
+      id: package
+      run: |
+        cd openwrt
+        make defconfig
+        make download -j8
+        find dl -size -1024c -exec ls -l {} \;
+        find dl -size -1024c -exec rm -f {} \;
 
-      - name: Prepare artifact
-        run: |
-          mkdir -p ./artifact/firmware
-          mkdir -p ./artifact/package
-          mkdir -p ./artifact/buildinfo
-          rm -rf $(find ./bin/targets/ -type d -name "packages")
-          cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
-          cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
-          cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
+    - name: Compile the firmware
+      id: compile
+      run: |
+        cd openwrt
+        echo -e "$(nproc) thread compile"
+        make -j8 V=s
+        # make -j$(nproc) || make -j1 || make -j1 V=s
+        # echo "::set-output name=status::success"
+        # grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
+        # [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
+        # echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
 
-      - name: Deliver buildinfo
-        uses: actions/upload-artifact@v2
-        with:
-          name: OpenWrt_buildinfo
-          path: ./artifact/buildinfo/
+    - name: Check space usage
+      if: (!cancelled())
+      run: df -hT
 
-      - name: Deliver package
-        uses: actions/upload-artifact@v2
-        with:
-          name: OpenWrt_package
-          path: ./artifact/package/
+    - name: Prepare artifact
+      run: |
+        mkdir -p ./artifact/firmware
+        mkdir -p ./artifact/package
+        mkdir -p ./artifact/buildinfo
+        rm -rf $(find ./bin/targets/ -type d -name "packages")
+        cp -rf $(find ./bin/targets/ -type f) ./artifact/firmware/
+        cp -rf $(find ./bin/packages/ -type f -name "*.ipk") ./artifact/package/
+        cp -rf $(find ./bin/targets/ -type f -name "*.buildinfo" -o -name "*.manifest") ./artifact/buildinfo/
 
-      - name: Deliver firmware
-        uses: actions/upload-artifact@v2
-        with:
-          name: OpenWrt_firmware
-          path: ./bin/targets/
+    - name: Deliver buildinfo
+      uses: actions/upload-artifact@v2
+      if: steps.organize.outputs.status == 'success' && !cancelled()
+      with:
+        name: OpenWrt_buildinfo
+        path: ./artifact/buildinfo/
+    
+    - name: Deliver package
+      uses: actions/upload-artifact@v2
+      with:
+        name: OpenWrt_package
+        path: ./artifact/package/
 
-      - name: Upload release asset
-        if: github.event == 'release'
-        uses: svenstaro/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.RELEASE }}
-          file: ./artifact/firmware/*
-          tag: ${{ github.ref }}
-          file_glob: true
+    - name: Deliver firmware
+      uses: actions/upload-artifact@v2
+      with:
+        name: OpenWrt_firmware
+        path: ./bin/targets/
+
+    - name: Upload release asset
+      id: github.event == 'release'
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE }}
+        file: ./artifact/firmware/*
+        tag: ${{ github.ref }}
+        file_glob: true
