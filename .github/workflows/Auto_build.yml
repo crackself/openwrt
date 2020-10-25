@@ -64,11 +64,11 @@ jobs:
 
     - name: add custom packages
       run: |
-        sed -i 's/=1.13/=1.15/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang-version.mk
-        sed -i 's/=15/=3/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang-version.mk
+        sed -i 's/=1.13/=1.15/' /home/runner/work/openwrt/feeds/packages/lang/golang/golang-version.mk
+        sed -i 's/=15/=3/' /home/runner/work/openwrt/feeds/packages/lang/golang/golang-version.mk
         sed -i 's/5fb43171046cf8784325e67913d55f88a683435071eef8e9da1aa8a1588fcf5d/896a602570e54c8cdfc2c1348abd4ffd1016758d0bd086ccd9787dbfc9b64888/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang/Makefile
-        sed -i 's/=2.27/=2.43/' /home/runner/work/openwrt/openwrt/feeds/packages/libs/libcap/Makefile
-        sed -i 's/PKG_HASH:=dac1792d0118bee6aae6ba7fb93ff1602c6a9bda812fd63916eee1435b9c486a/PKG_HASH:=512a0e5fc4c1e06d472a20da26aa96a9b9bf2a26b23f094f77f1b8da56cc427f/' /home/runner/work/openwrt/openwrt/feeds/packages/libs/libcap/Makefile
+        sed -i 's/=2.27/=2.43/' /home/runner/work/openwrt/feeds/packages/libs/libcap/Makefile
+        sed -i 's/PKG_HASH:=dac1792d0118bee6aae6ba7fb93ff1602c6a9bda812fd63916eee1435b9c486a/PKG_HASH:=512a0e5fc4c1e06d472a20da26aa96a9b9bf2a26b23f094f77f1b8da56cc427f/' /home/runner/work/openwrt/feeds/packages/libs/libcap/Makefile
         git clone --depth=1 https://github.com/xiaorouji/openwrt-package.git package/crackself/diy1
         git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/crackself/luci-theme-argon
         git clone --depth=1 https://github.com/tty228/luci-app-serverchan.git  package/crackself/luci-app-serverchan
