@@ -75,7 +75,6 @@ jobs:
               sed -i 's/=15/=3/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang-version.mk
               sed -i 's/5fb43171046cf8784325e67913d55f88a683435071eef8e9da1aa8a1588fcf5d/896a602570e54c8cdfc2c1348abd4ffd1016758d0bd086ccd9787dbfc9b64888/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang/Makefile
 
-
               git clone --depth=1 https://github.com/xiaorouji/openwrt-package.git package/crackself/diy1
               git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/crackself/luci-theme-argon
               #git clone --depth=1 https://github.com/kenzok8/openwrt-packages.git package/crackself/openwrt-packages
@@ -86,20 +85,22 @@ jobs:
 
       - name: Generate configuration file
         run: |
-          rm -f .tmp .config*
-          cat >> .github/workflows/19.07.diffconfig >> .config
-          # make defconfig
+              rm -f tmp .config
+              cat cp .github/workflows/19.07.diffconfig .config
+              make defconfig
 
       - name: Make download
         run: |
-          make download -j$(nproc)
-          find dl -size -1024c -exec ls -l {} \;
-          find dl -size -1024c -exec rm -f {} \;
+              #make download -j$(nproc)
+              make download -j8
+              find dl -size -1024c -exec ls -l {} \;
+              find dl -size -1024c -exec rm -f {} \;
 
       - name: Compile firmware
         run: |
-          echo -e "$(nproc) thread build."
-          make -j$(nproc) V=s
+              echo -e "$(nproc) thread build."
+              #make -j$(nproc) V=s
+              make -j8 V=s
 
       - name: Prepare artifact
         run: |
