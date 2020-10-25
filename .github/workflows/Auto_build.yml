@@ -63,7 +63,7 @@ jobs:
       run: cd openwrt && ./scripts/feeds uninstall kcptun
 
     - name: add custom packages
-        run: |
+      run: |
         sed -i 's/=1.13/=1.15/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang-version.mk
         sed -i 's/=15/=3/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang-version.mk
         sed -i 's/5fb43171046cf8784325e67913d55f88a683435071eef8e9da1aa8a1588fcf5d/896a602570e54c8cdfc2c1348abd4ffd1016758d0bd086ccd9787dbfc9b64888/' /home/runner/work/openwrt/openwrt/feeds/packages/lang/golang/golang/Makefile
