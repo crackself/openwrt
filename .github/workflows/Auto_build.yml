@@ -344,7 +344,7 @@ jobs:
             CONFIG_boost-static-and-shared-libs=y
             CONFIG_boost-variant-release=y
           EOF
-
+          make defconfig
       - name: Make download
         run: |
           make download -j$(nproc)
