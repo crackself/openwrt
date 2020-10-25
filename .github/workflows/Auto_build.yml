@@ -83,15 +83,16 @@ jobs:
               git clone --depth=1 -b master https://github.com/vernesong/OpenClash.git package/crackself/OpenClash
               git clone --depth=1 https://github.com/maxlicheng/luci-app-unblockmusic.git package/crackself/luci-app-unblockmusic
 
-      - name: Generate configuration file
-        run: |
-              rm -f tmp .config
-              cat cp .github/workflows/19.07.diffconfig .config
-              make defconfig
+    - name: Load custom configuration
+      run: |
+        cd openwrt
+        cp .github/workflows/19.07.diffconfig .config
 
       - name: Make download
         run: |
               #make download -j$(nproc)
+              make defconfig
+              cat .config
               make download -j8
               find dl -size -1024c -exec ls -l {} \;
               find dl -size -1024c -exec rm -f {} \;
