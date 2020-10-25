@@ -72,8 +72,8 @@ jobs:
         git clone --depth=1 https://github.com/tty228/luci-app-serverchan.git  package/crackself/luci-app-serverchan
         git clone --depth=1 -b master https://github.com/vernesong/OpenClash.git package/crackself/OpenClash
         git clone --depth=1 https://github.com/maxlicheng/luci-app-unblockmusic.git package/crackself/luci-app-unblockmusic
-#git clone --depth=1 https://github.com/kenzok8/openwrt-packages.git package/crackself/openwrt-packages
-#git clone --depth=1 https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/crackself/luci-app-jd-dailybonus
+        git clone --depth=1 https://github.com/kenzok8/openwrt-packages.git package/crackself/openwrt-packages
+        git clone --depth=1 https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/crackself/luci-app-jd-dailybonus
 
     - name: Load custom configuration
       run: |
