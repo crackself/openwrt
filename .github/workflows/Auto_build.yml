@@ -30,7 +30,7 @@ jobs:
               /usr/share/dotnet \
               /etc/mysql \
               /etc/php
-            sudo -E apt-get -y purge \
+        sudo -E apt-get -y purge \
               azure-cli \
               ghc* \
               zulu* \
@@ -54,13 +54,13 @@ jobs:
         ref: openwrt-19.07
 
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: cd /home/runner/work/openwrt/openwrt && ./scripts/feeds update -a
 
     - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+      run: cd /home/runner/work/openwrt/openwrt && ./scripts/feeds install -a
 
     - name: remove custom package
-      run: cd openwrt && ./scripts/feeds uninstall kcptun
+      run: cd /home/runner/work/openwrt/openwrt && ./scripts/feeds uninstall kcptun
 
     - name: add custom packages
       run: |
@@ -77,7 +77,7 @@ jobs:
 
     - name: Load custom configuration
       run: |
-        cd openwrt
+        cd /home/runner/work/openwrt/openwrt
         cp .github/workflows/19.07.diffconfig .config
 
     # - name: SSH connection to Actions
@@ -90,7 +90,7 @@ jobs:
     - name: Download package
       id: package
       run: |
-        cd openwrt
+        cd /home/runner/work/openwrt/openwrt
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
@@ -99,7 +99,7 @@ jobs:
     - name: Compile the firmware
       id: compile
       run: |
-        cd openwrt
+        cd /home/runner/work/openwrt/openwrt
         echo -e "$(nproc) thread compile"
         make -j8 V=s
         # make -j$(nproc) || make -j1 || make -j1 V=s
