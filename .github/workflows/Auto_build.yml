@@ -82,6 +82,7 @@ jobs:
          	$(MAKE) -C progs $@
          	$(MAKE) -C doc $@
          	$(MAKE) -C kdebug $@
+        EOF
         rm  /home/runner/work/openwrt/openwrt/feeds/packages/libs/libcap/patches/{100-portability.patch,200-change-hardcoded-shell-to-sh.patch}
         git clone --depth=1 https://github.com/xiaorouji/openwrt-package.git package/crackself/diy1
         git clone --depth=1 https://github.com/jerrykuku/luci-theme-argon.git package/crackself/luci-theme-argon
