@@ -1,0 +1,16 @@
+#!/bin/sh
+
+chmod +x /etc/init.d/*
+
+# disable vlmcsd
+/etc/init.d/vlmcsd disable
+/etc/init.d/vlmcsd stop
+
+# disable adguardhome
+/etc/init.d/adguardhome disable
+/etc/init.d/adguardhome stop
+
+rm -rf /tmp/luci-modulecache/
+rm -f /tmp/luci-indexcache
+
+exit 0
