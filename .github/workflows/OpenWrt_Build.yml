@@ -14,6 +14,9 @@ name: OpenWrt_Build
     # types: [published]
 
 on:
+  push:
+    branches: 
+      - master
   schedule:
     - cron: 00 03 * * 1
 
