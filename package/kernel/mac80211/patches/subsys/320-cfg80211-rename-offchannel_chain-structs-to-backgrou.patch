@@ -156,7 +156,7 @@ Signed-off-by: Johannes Berg <johannes.berg@intel.com>
  	NUM_NL80211_EXT_FEATURES,
 --- a/net/mac80211/cfg.c
 +++ b/net/mac80211/cfg.c
-@@ -4345,15 +4345,15 @@ out:
+@@ -4342,15 +4342,15 @@ out:
  }
  
  static int
@@ -176,7 +176,7 @@ Signed-off-by: Johannes Berg <johannes.berg@intel.com>
  }
  
  const struct cfg80211_ops mac80211_config_ops = {
-@@ -4460,5 +4460,5 @@ const struct cfg80211_ops mac80211_confi
+@@ -4457,5 +4457,5 @@ const struct cfg80211_ops mac80211_confi
  	.reset_tid_config = ieee80211_reset_tid_config,
  	.set_sar_specs = ieee80211_set_sar_specs,
  	.color_change = ieee80211_color_change,
@@ -472,7 +472,7 @@ Signed-off-by: Johannes Berg <johannes.berg@intel.com>
  }
 --- a/net/wireless/nl80211.c
 +++ b/net/wireless/nl80211.c
-@@ -796,7 +796,7 @@ static const struct nla_policy nl80211_p
+@@ -801,7 +801,7 @@ static const struct nla_policy nl80211_p
  	[NL80211_ATTR_MBSSID_CONFIG] =
  			NLA_POLICY_NESTED(nl80211_mbssid_config_policy),
  	[NL80211_ATTR_MBSSID_ELEMS] = { .type = NLA_NESTED },
@@ -481,7 +481,7 @@ Signed-off-by: Johannes Berg <johannes.berg@intel.com>
  };
  
  /* policy for the key attributes */
-@@ -9291,9 +9291,9 @@ static int nl80211_start_radar_detection
+@@ -9306,9 +9306,9 @@ static int nl80211_start_radar_detection
  		goto unlock;
  	}
  
