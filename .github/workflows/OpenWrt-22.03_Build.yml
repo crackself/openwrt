@@ -62,7 +62,7 @@ jobs:
           git clone --depth=1 https://github.com/UnblockNeteaseMusic/luci-app-unblockneteasemusic package/crackself/luci-app-unblockmusic
       - name: Generate configuration file
         run: |
-          cp .github/workflows/22.03.config .config
+          cp .github/22.03.config .config
           #cp .github/workflows/master-vpn-v2.config .config
           make defconfig
       - name: Make download
